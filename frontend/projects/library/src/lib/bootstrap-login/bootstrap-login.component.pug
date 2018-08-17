@@ -1,0 +1,25 @@
+.row.justify-content-center.bodycontent
+    .col-md-6
+        .card
+            .card-header Login
+            .card-body
+                form([formGroup]="loginForm")
+                    .form-group.row
+                        label.col-sm-3.col-form-label Email
+                        .col-sm-9
+                            input.form-control(type="text", placeholder="Your email address", formControlName="email")
+                            .invalid-feedback A valid e-mail address is required.
+                    .form-group.row
+                        label.col-sm-3.col-form-label Password
+                        .col-sm-9
+                            input.form-control(type="text", placeholder="Your password", formControlName="password")
+                            .invalid-feedback A valid password is required.
+                    .form-group.row.justify-content-end
+                        .col-sm-9.btn-group(*ngIf="!loggingIn")
+                            button.btn.btn-primary(type="button", [disabled]="loginForm.status!='VALID'",
+                                            (click)="do_login($event)", data-loading-text="...") Login
+                            button.btn.btn-warning(type="button", *ngIf="!loginForm.untouched", 
+                                            (click)="reset_form()") Reset
+                        .col-sm-9(*ngIf="loggingIn")
+                            i.fa.fa-spinner.fa-spin.login-spinner
+
