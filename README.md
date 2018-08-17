@@ -6,7 +6,7 @@ A bootstrap package to get started with building WebApps.
 ## Dependencies
 
 * arunsworld/angular:latest Docker image
-* arunsworld/django-apache:Anaconda3-5.2.0 Docker image
+* arunsworld/django-apache:Anaconda3-5.2.0 Docker image (`docker pull arunsworld/django-apache:Anaconda3-5.2.0`)
 
 ## How to use
 
@@ -29,7 +29,7 @@ cd scripts
 
 ## How to customize
 
-* Modify package name in package.json. Change ab-bootstrap.
-* Modify project name in angular.json. Change ab-bootstrap.
-* Modify app title in index.html.
-* Modify 000-default.conf to change the folder name from ab-bootstrap to your project name.
+* Modify package name in frontend/package.json. Change ab-bootstrap.
+* Modify project name in frontend/angular.json. Change ab-bootstrap.
+* Modify app title in frontend/src/index.html.
+* Modify scripts/000-default.conf to change the folder name from ab-bootstrap to your project name.
