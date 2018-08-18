@@ -30,7 +30,7 @@ export class UserComponent implements OnInit {
                     this.users = r.users;
                     console.log('done loading users...');
                 } else {
-                    alert('Could not load users...');
+                    alert('Could not load users...: ' + r.failure_reason);
                 }
             }
         });

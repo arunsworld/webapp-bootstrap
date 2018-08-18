@@ -18,7 +18,7 @@ from django.urls import path
 from django.conf.urls import include
 from rest_framework.schemas import get_schema_view
 from rest_framework_simplejwt.views import token_obtain_pair, token_refresh, token_verify
-from .views import user_list_view, user_detail_view
+from .views import user_list_view, user_detail_view, user_self_view
 
 urlpatterns = [
     path('', get_schema_view()),
@@ -30,6 +30,7 @@ urlpatterns = [
     path('auth/token/verify/', token_verify),
     
     path('users/', user_list_view, name='user-list'),
+    path('user/', user_self_view, name='user-self'),
     path('user/<int:pk>/', user_detail_view, name='user-detail'),
 
     path('admin/', admin.site.urls),

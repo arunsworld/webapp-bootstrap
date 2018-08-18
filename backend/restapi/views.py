@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from django.core.exceptions import PermissionDenied
 from django.contrib.auth.models import User
 from rest_framework.reverse import reverse
-
+from rest_framework import permissions
 
 class UserHelpers():
     
@@ -27,11 +27,22 @@ class UserSeralizer(serializers.Serializer):
     email = serializers.EmailField()
 
 
+# My implementation of IsAuthenticatedOrReadOnly for illustration
+class IsAuthenticatedForUnsafe(permissions.BasePermission):
+    message = 'Authenticated user required.'
+
+    def has_permission(self, request, view):
+        if request.method in permissions.SAFE_METHODS:
+            return True
+        return permissions.IsAuthenticated().has_permission(request, view)
+
+
 class UserList(views.APIView):
     """
     List all users, or create a new user.
     """
     serializer_class = UserSeralizer
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
 
     def get(self, request):
         result = [UserHelpers.user_representation(user, request) for user in User.objects.all()]
@@ -58,17 +69,18 @@ class UserDetail(views.APIView):
     Retreive, update or delete a user.
     """
     serializer_class = UserSeralizer
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
 
     def get(self, request, pk):
         user = User.objects.filter(id=pk)
         if (len(user)) == 0:
-            return Response({}, status=status.HTTP_404_NOT_FOUND)
+            return Response(dict(message="User by that ID does not exist."), status=status.HTTP_404_NOT_FOUND)
         return Response(UserHelpers.user_representation(user[0], request))
 
     def put(self, request, pk):
         user = User.objects.filter(id=pk)
         if (len(user)) == 0:
-            return Response({}, status=status.HTTP_404_NOT_FOUND)
+            return Response(dict(message="User by that ID does not exist."), status=status.HTTP_404_NOT_FOUND)
         user = user[0]
         serializer = UserSeralizer(data = request.data)
         serializer.is_valid(raise_exception=True)
@@ -86,7 +98,7 @@ class UserDetail(views.APIView):
     def delete(self, request, pk):
         user = User.objects.filter(id=pk)
         if (len(user)) == 0:
-            return Response({}, status=status.HTTP_404_NOT_FOUND)
+            return Response(dict(message="User by that ID does not exist."), status=status.HTTP_404_NOT_FOUND)
         user = user[0]
         if (user.id == request.user.id):
             return Response(dict(error="User cannot delete itself."), status=status.HTTP_400_BAD_REQUEST)
@@ -95,3 +107,13 @@ class UserDetail(views.APIView):
 
 user_detail_view = UserDetail.as_view()
 
+
+class UserSelf(views.APIView):
+    """
+    Details about the logged in user
+    """
+
+    def get(self, request):
+        return Response(UserHelpers.user_representation(request.user, request))
+
+user_self_view = UserSelf.as_view()

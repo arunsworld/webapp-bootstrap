@@ -35,25 +35,12 @@ export class TestAPIUserService extends UserService {
                 user_status.complete();
             },
             (e: HttpErrorResponse) => {
-                if (e.status === 401) {
-                    const login_status = new Subject<LoginCallStatus>();
-                    login_status.subscribe(
-                        (s: LoginCallStatus) => {
-                            if (s.loggedIn) {
-                                this.getUsers().subscribe((r: UserStatus) => {
-                                    user_status.next(r);
-                                    user_status.complete();
-                                });
-                            } else {
-                                user_status.next({running: false, success: false });
-                                user_status.complete();
-                            }
-                        }
-                    );
-                    this.loginService.refreshAccessToken(login_status);
-                    return;
-                }
                 const end_event: UserStatus = {running: false, success: false };
+                if (e.status === 401) {
+                    end_event.failure_reason = 'Permission denied.';
+                } else {
+                    end_event.failure_reason = 'Could not connect to server.';
+                }
                 user_status.next(end_event);
                 user_status.complete();
             }
