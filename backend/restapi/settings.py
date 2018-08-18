@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'corsheaders',
+    'rest_framework_swagger'
 ]
 
 MIDDLEWARE = [
@@ -137,4 +138,9 @@ CORS_ALLOW_CREDENTIALS = True
 
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(days=1),
+}
+
+SWAGGER_SETTINGS = {
+    'LOGIN_URL': '/auth/login',
+    'LOGOUT_URL': '/auth/logout'
 }

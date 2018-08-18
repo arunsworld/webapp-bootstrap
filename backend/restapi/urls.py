@@ -19,9 +19,13 @@ from django.conf.urls import include
 from rest_framework.schemas import get_schema_view
 from rest_framework_simplejwt.views import token_obtain_pair, token_refresh, token_verify
 from .views import user_list_view, user_detail_view, user_self_view
+from rest_framework_swagger.views import get_swagger_view
+
+schema_view = get_swagger_view(title='Bootstrap API')
 
 urlpatterns = [
     path('', get_schema_view()),
+    path('swagger/', schema_view),
     
     path('auth/', include('rest_framework.urls', namespace='rest_framework')),
 
