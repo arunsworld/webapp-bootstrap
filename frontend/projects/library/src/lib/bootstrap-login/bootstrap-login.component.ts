@@ -1,4 +1,5 @@
-import { Component, OnInit, Output, EventEmitter, Input, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input, ViewEncapsulation, ViewChild,
+  ElementRef, AfterContentInit, Renderer } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 declare var $: any;
 
@@ -7,18 +8,23 @@ declare var $: any;
   templateUrl: 'bootstrap-login.component.html',
   styles: ['.login-spinner {font-size:35px; color:green;}']
 })
-export class BootstrapLoginComponent {
+export class BootstrapLoginComponent implements AfterContentInit {
 
   @Input() loggingIn = false;
   @Output() login = new EventEmitter<LoginCredentials>();
+  @ViewChild('login') login_text: ElementRef;
 
   loginForm: FormGroup;
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private renderer: Renderer) {
     this.loginForm = fb.group({
       email: [null, Validators.compose([Validators.required, Validators.email])],
       password: [null, Validators.compose([Validators.required, Validators.minLength(6)])]
     });
+  }
+
+  ngAfterContentInit(): void {
+    this.renderer.invokeElementMethod(this.login_text.nativeElement, 'focus');
   }
 
   reset_form() {
@@ -27,7 +33,6 @@ export class BootstrapLoginComponent {
 
   do_login(event: MouseEvent) {
     const btn = event.currentTarget;
-    console.log(btn);
     this.login.emit(this.loginForm.value);
   }
 

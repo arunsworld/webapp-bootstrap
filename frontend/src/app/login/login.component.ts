@@ -11,16 +11,6 @@ import { LoginService, LoginCallStatus } from './login.service';
       </div>
       <div *ngIf="!loggedInCheck">
         <ab-bootstrap-login [loggingIn]="loggingIn" (login)="do_login($event)"></ab-bootstrap-login>
-        <div *ngIf="creds">
-            <br/>
-            <hr/>
-            <div class="row justify-content-center">
-                <div class="col-sm-6">
-                    <p>Logging in with: {{ creds | json }}</p>
-                </div>
-            </div>
-            <hr/>
-        </div>
       </div>
     </div>
   `,
@@ -34,7 +24,7 @@ export class LoginComponent {
 
     constructor(private router: Router, private loginService: LoginService) {
       if (loginService.loggedIn) {
-        this.router.navigate(['/demo']);
+        this.router.navigate(['/home']);
       }
       this.loggedInCheck = true;
       this.checkIfLoggedIn();
@@ -80,12 +70,12 @@ export class LoginComponent {
         alert('Login failed...');
         return;
       }
-      this.router.navigate(['/demo']);
+      this.router.navigate(['/home']);
     }
 
     private checkLoginSuccessful(status: LoginCallStatus) {
       if (status.loggedIn) {
-        this.router.navigate(['/demo']);
+        this.router.navigate(['/home']);
       }
       this.loggedInCheck = false;
     }

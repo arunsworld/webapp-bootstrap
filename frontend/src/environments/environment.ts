@@ -1,10 +1,14 @@
+import { TestAPIUserService } from '../app/home/user.service';
+import { TestAPILoginService } from '../app/login/login.service';
 
 // This file can be replaced during build by using the `fileReplacements` array.
 // `ng build ---prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  userService: TestAPIUserService,
+  loginService: TestAPILoginService
 };
 
 /*

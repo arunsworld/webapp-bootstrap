@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 
 @Component({
     template: `
-        <ab-bootstrap-navbar brand="Demo App">
+        <ab-bootstrap-navbar brand="Component Library">
             <ab-demo-nav></ab-demo-nav>
             <ab-profile-nav></ab-profile-nav>
         </ab-bootstrap-navbar>

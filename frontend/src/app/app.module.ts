@@ -10,22 +10,32 @@ import { RouteReuseStrategy } from '@angular/router';
 
 import 'moment-duration-format';
 import { LoginComponent } from './login/login.component';
-import { LoginService, MockLoginService } from './login/login.service';
+import { LoginService } from './login/login.service';
+import { HttpClientModule } from '@angular/common/http';
+import { HomeComponent } from './home/home.component';
+import { UserComponent } from './home/user.component';
+import { UserService } from './home/user.service';
+import { environment } from '../environments/environment';
+
 
 @NgModule({
   declarations: [
     AppComponent,
-    LoginComponent
+    LoginComponent,
+    HomeComponent,
+    UserComponent
   ],
   imports: [
     BrowserModule,
     LibraryModule,
     DemoModule,
-    AppRoutingModule
+    AppRoutingModule,
+    HttpClientModule
   ],
   providers: [
     {provide: RouteReuseStrategy, useClass: RouteReuseStrategyService},
-    {provide: LoginService, useClass: MockLoginService}
+    {provide: LoginService, useClass: environment.loginService},
+    {provide: UserService, useClass: environment.userService}
   ],
   bootstrap: [AppComponent]
 })

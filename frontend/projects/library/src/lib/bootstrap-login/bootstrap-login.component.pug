@@ -7,12 +7,12 @@
                     .form-group.row
                         label.col-sm-3.col-form-label Email
                         .col-sm-9
-                            input.form-control(type="text", placeholder="Your email address", formControlName="email")
+                            input.form-control(type="text", placeholder="Your email address", formControlName="email", #login="")
                             .invalid-feedback A valid e-mail address is required.
                     .form-group.row
                         label.col-sm-3.col-form-label Password
                         .col-sm-9
-                            input.form-control(type="text", placeholder="Your password", formControlName="password")
+                            input.form-control(type="password", placeholder="Your password", formControlName="password")
                             .invalid-feedback A valid password is required.
                     .form-group.row.justify-content-end
                         .col-sm-9.btn-group(*ngIf="!loggingIn")
