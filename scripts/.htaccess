@@ -4,3 +4,8 @@ RewriteCond %{DOCUMENT_ROOT}%{REQUEST_URI} -d
 RewriteRule ^ - [L]
 RewriteRule ^ /index.html
 Header set Access-Control-Allow-Origin "*"
+Header always append X-Frame-Options DENY
+Header set X-XSS-Protection "1; mode=block"
+Header set X-Content-Type-Options nosniff
+
+AddType application/font-woff2           .woff2
