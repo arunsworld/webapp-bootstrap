@@ -6,12 +6,12 @@ import { LoginService, LoginCallStatus } from './login.service';
 @Component({
   template: `
     <div class="bodycontent">
-      <div *ngIf="loggedInCheck">
+      <div *ngIf="loggedInCheck; else showLogin">
         <ab-loading headerMessage="Checking if logged in..."></ab-loading>
       </div>
-      <div *ngIf="!loggedInCheck">
+      <ng-template #showLogin>
         <ab-bootstrap-login [loggingIn]="loggingIn" (login)="do_login($event)"></ab-bootstrap-login>
-      </div>
+      </ng-template>
     </div>
   `,
   styles: ['.bodycontent { padding-top: 80px; }']
@@ -24,7 +24,7 @@ export class LoginComponent {
 
     constructor(private router: Router, private loginService: LoginService) {
       if (loginService.loggedIn) {
-        this.router.navigate(['/home']);
+        this.router.navigateByUrl(this.loginService.getNextUrl());
       }
       this.loggedInCheck = true;
       this.checkIfLoggedIn();
@@ -34,24 +34,20 @@ export class LoginComponent {
         this.loggingIn = true;
         this.creds = creds;
         this.loginService.doLogin(creds).subscribe((status: LoginCallStatus) => {
-          if (!status.running) {
-            this.doLoginDone(status);
-            this.loggingIn = false;
-          }
+          this.doLoginDone(status);
+          this.loggingIn = false;
         });
     }
 
     private checkIfLoggedIn() {
       this.loginService.checkIfLoggedIn().subscribe((status: LoginCallStatus) => {
-        if (!status.running) {
-          this.checkLoginDone(status);
-        }
+        this.checkLoginDone(status);
       });
     }
 
     private checkLoginDone(status: LoginCallStatus) {
       if (!status.success) {
-        this.checkLoginFailed(status);
+        this.failedToReachServer();
         return;
       }
       this.checkLoginSuccessful(status);
@@ -59,7 +55,7 @@ export class LoginComponent {
 
     private doLoginDone(status: LoginCallStatus) {
       if (!status.success) {
-        this.doLoginFailed(status);
+        this.failedToReachServer();
         return;
       }
       this.doLoginSuccessful(status);
@@ -70,21 +66,17 @@ export class LoginComponent {
         alert('Login failed...');
         return;
       }
-      this.router.navigate(['/home']);
+      this.router.navigateByUrl(this.loginService.getNextUrl());
     }
 
     private checkLoginSuccessful(status: LoginCallStatus) {
       if (status.loggedIn) {
-        this.router.navigate(['/home']);
+        this.router.navigateByUrl(this.loginService.getNextUrl());
       }
       this.loggedInCheck = false;
     }
 
-    private doLoginFailed(status: LoginCallStatus) {
-      alert('Failed to reach server. Please try again...');
-    }
-
-    private checkLoginFailed(status: LoginCallStatus) {
+    private failedToReachServer() {
       alert('Failed to reach server. Please refresh the page...');
     }
 

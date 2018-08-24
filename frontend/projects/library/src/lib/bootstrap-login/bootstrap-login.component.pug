@@ -15,11 +15,12 @@
                             input.form-control(type="password", placeholder="Your password", formControlName="password")
                             .invalid-feedback A valid password is required.
                     .form-group.row.justify-content-end
-                        .col-sm-9.btn-group(*ngIf="!loggingIn")
+                        .col-sm-9.btn-group(*ngIf="!loggingIn; else showSpinner")
                             button.btn.btn-primary(type="button", [disabled]="loginForm.status!='VALID'",
                                             (click)="do_login($event)", data-loading-text="...") Login
                             button.btn.btn-warning(type="button", *ngIf="!loginForm.untouched", 
                                             (click)="reset_form()") Reset
-                        .col-sm-9(*ngIf="loggingIn")
-                            i.fa.fa-spinner.fa-spin.login-spinner
+                        ng-template(#showSpinner="")
+                            .col-sm-9
+                                i.fa.fa-spinner.fa-spin.login-spinner
 

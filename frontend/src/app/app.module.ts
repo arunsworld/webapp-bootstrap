@@ -16,6 +16,7 @@ import { HomeComponent } from './home/home.component';
 import { UserComponent } from './home/user.component';
 import { UserService } from './home/user.service';
 import { environment } from '../environments/environment';
+import { WebStorageModule } from 'ngx-store';
 
 
 @NgModule({
@@ -30,7 +31,8 @@ import { environment } from '../environments/environment';
     LibraryModule,
     DemoModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    WebStorageModule
   ],
   providers: [
     {provide: RouteReuseStrategy, useClass: RouteReuseStrategyService},

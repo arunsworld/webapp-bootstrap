@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { LoginService } from '../login/login.service';
+import { UserService, UserStatus } from './user.service';
 
 @Component({
     template: `
@@ -10,6 +11,14 @@ import { LoginService } from '../login/login.service';
                     <a class="nav-link" routerLink="/home/users">Users</a>
                 </li>
             </ul>
+            <ul class="navbar-nav">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" data-toggle="dropdown">{{myName}}</a>
+                    <div class="dropdown-menu dropdown-menu-right">
+                        <a class="dropdown-item" href="" (click)="logout()">Logout</a>
+                    </div>
+                </li>
+            </ul>
         </ab-bootstrap-navbar>
         <div class="container-fluid bodycontent">
             <router-outlet></router-outlet>
@@ -17,8 +26,29 @@ import { LoginService } from '../login/login.service';
     `,
     styles: ['.bodycontent { padding-top: 80px; }']
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit {
 
-    constructor() { }
+    public myName: string;
+
+    constructor(private loginService: LoginService, private router: Router, private userService: UserService) { }
+
+    ngOnInit(): void {
+        this.userService.getSelf().subscribe( (r: UserStatus) => {
+            if (r.success) {
+                this.myName = r.users[0].first_name + ' ' + r.users[0].last_name;
+                return;
+            }
+            if (r.loggedOut) {
+                this.loginService.doLogout();
+                this.router.navigate(['/login']);
+            }
+        });
+    }
+
+    public logout() {
+        this.loginService.doLogout();
+        this.router.navigate(['/login']);
+        return false;
+    }
 }
 

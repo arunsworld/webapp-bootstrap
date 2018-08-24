@@ -1,11 +1,13 @@
-import { Observable, BehaviorSubject, Subject } from 'rxjs';
+import { Observable, BehaviorSubject, Subject, of } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { LoginService, LoginCallStatus } from '../login/login.service';
+import { map, catchError } from 'rxjs/operators';
 
 
 export abstract class UserService {
 
+    public abstract getSelf(): Observable<UserStatus>;
     public abstract getUsers(): Observable<UserStatus>;
     public abstract addUser(): Observable<UserStatus>;
     public abstract deleteUser(): Observable<UserStatus>;
@@ -23,41 +25,42 @@ export class TestAPIUserService extends UserService {
         super();
     }
 
-    public getUsers(): Observable<UserStatus> {
-        const start_event: UserStatus = { running: true };
-        const user_status = new BehaviorSubject<UserStatus>(start_event);
-        const url = this.root_url + 'users/';
-        const auth = 'Bearer ' + this.loginService.access_token;
-        this.http.get(url, {headers: {Authorization: auth}}).subscribe(
-            (d: User[]) => {
-                const end_event: UserStatus = {running: false, success: true, users: d};
-                user_status.next(end_event);
-                user_status.complete();
-            },
-            (e: HttpErrorResponse) => {
-                const end_event: UserStatus = {running: false, success: false };
-                if (e.status === 401) {
-                    end_event.failure_reason = 'Permission denied.';
-                } else {
-                    end_event.failure_reason = 'Could not connect to server.';
+    public getSelf(): Observable<UserStatus> {
+        const url = this.root_url + 'user/';
+        return this.http.get(url, {headers: this.loginService.authHeader()}).pipe(
+            map( (user: User) => {
+                return {success: true, users: [user]};
+            } ),
+            catchError( (err: HttpErrorResponse) => {
+                if (err.status === 401) {
+                  return of({ success: false, loggedOut: true });
                 }
-                user_status.next(end_event);
-                user_status.complete();
-            }
+                return of({ success: false });
+            })
         );
-        return user_status.asObservable();
+    }
+
+    public getUsers(): Observable<UserStatus> {
+        const url = this.root_url + 'users/';
+        return this.http.get(url).pipe(
+            map( (users: User[]) => {
+                return {running: false, success: true, users: users};
+            } ),
+            catchError( (err: HttpErrorResponse) => {
+                if (err.status === 401) {
+                    return of({ success: false, loggedOut: true });
+                }
+                return of({ success: false });
+            })
+        );
     }
 
     public addUser(): Observable<UserStatus> {
-        const start_event: UserStatus = { running: true };
-        const login_status = new BehaviorSubject<UserStatus>(start_event);
-        return login_status.asObservable();
+        return of({success: false});
     }
 
     public deleteUser(): Observable<UserStatus> {
-        const start_event: UserStatus = { running: true };
-        const login_status = new BehaviorSubject<UserStatus>(start_event);
-        return login_status.asObservable();
+        return of({success: false});
     }
 
 }
@@ -83,8 +86,8 @@ export interface User {
 }
 
 export interface UserStatus {
-    running: boolean;
-    success?: boolean;
+    success: boolean;
+    loggedOut?: boolean;
     failure_reason?: string;
     users?: User[];
 }

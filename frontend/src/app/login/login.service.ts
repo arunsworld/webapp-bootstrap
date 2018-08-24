@@ -1,18 +1,25 @@
 import { Injectable } from '@angular/core';
 import { LoginCredentials } from 'projects/library/src/public_api';
-import { Observable, BehaviorSubject, Subject } from 'rxjs';
+import { Observable, BehaviorSubject, Subject, of } from 'rxjs';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { map, catchError } from 'rxjs/operators';
+import { LocalStorage, LocalStorageService } from 'ngx-store';
 
 
 export abstract class LoginService {
 
-  loggedIn = false;
-  public access_token: string;
+  public loggedIn = false;
+  @LocalStorage() access_token = '';
+  private nextUrl = '/';
 
   constructor() { }
 
   public abstract doLogin(creds: LoginCredentials): Observable<LoginCallStatus>;
   public abstract checkIfLoggedIn(): Observable<LoginCallStatus>;
+  public abstract doLogout();
+  public abstract authHeader(): {Authorization: string};
+  public setNextUrl(url: string) { this.nextUrl = url; }
+  public getNextUrl() { return this.nextUrl; }
 
 }
 
@@ -22,73 +29,67 @@ export abstract class LoginService {
 })
 export class TestAPILoginService extends LoginService {
 
-  root_url = 'http://localhost:8091/';
-  public access_token: string;
-  public loggedIn = false;
+  public root_url = 'http://localhost:8091/';
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private localStorageService: LocalStorageService) {
     super();
+    this.dumpLocalStorage();
   }
 
   public doLogin(creds: LoginCredentials): Observable<LoginCallStatus> {
-    const start_event: LoginCallStatus = { running: true };
-    const login_status = new BehaviorSubject<LoginCallStatus>(start_event);
     const url = this.root_url + 'auth/token/obtain/';
-    this.http.post(url, {username: creds.email, password: creds.password}).subscribe(
-      (d: any) => {
-        this.access_token = d.access;
-        this.loggedIn = true;
-        const end_event: LoginCallStatus = { running: false, success: true, loggedIn: true};
-        login_status.next(end_event);
-        login_status.complete();
-      },
-      (e: HttpErrorResponse) => {
-        this.loggedIn = false;
-        const end_event: LoginCallStatus = { running: false, success: true, loggedIn: false};
-        if (e.status === 400) {
-          login_status.next(end_event);
-          login_status.complete();
-          return;
+    return this.http.post(url, {username: creds.email, password: creds.password}).pipe(
+      map( (res: AuthToken) => {
+        if (!res.access) {
+          return { running: false, success: true, loggedIn: false};
         }
-        end_event.success = false;
-        login_status.next(end_event);
-        login_status.complete();
-      }
+        this.access_token = res.access;
+        this.loggedIn = true;
+        return { running: false, success: true, loggedIn: true};
+      }),
+      catchError( (err: HttpErrorResponse) => {
+        if (err.status === 400) {
+          return of({ running: false, success: true, loggedIn: false});
+        }
+        return of({ running: false, success: false, loggedIn: false});
+      })
     );
-    return login_status.asObservable();
   }
 
   public checkIfLoggedIn(): Observable<LoginCallStatus> {
-    const start_event: LoginCallStatus = { running: true };
-    const login_status = new BehaviorSubject<LoginCallStatus>(start_event);
-    if (!this.access_token) {
-      setTimeout(() => {
-        const end_event: LoginCallStatus = { running: false, success: true, loggedIn: false};
-        login_status.next(end_event);
-        login_status.complete();
-      }, 0);
-    } else {
-      this.validateAccessToken(login_status);
+    if (this.access_token === '') {
+      return of({ running: false, success: true, loggedIn: false});
     }
-    return login_status.asObservable();
+    const url = this.root_url + 'auth/token/verify/';
+    return this.http.post(url, {token: this.access_token}).pipe(
+      map(res => {
+        this.loggedIn = true;
+        return {running: false, success: true, loggedIn: true};
+      }),
+      catchError( (err: HttpErrorResponse) => {
+        if (err.status === 401) {
+          return of({ running: false, success: true, loggedIn: false});
+        }
+        return of({ running: false, success: false, loggedIn: false});
+      })
+    );
   }
 
-  private validateAccessToken(status: BehaviorSubject<LoginCallStatus>) {
-    const url = this.root_url + 'auth/token/verify/';
-    this.http.post(url, {token: this.access_token}).subscribe(
-      d => {
-        this.loggedIn = true;
-        const end_event: LoginCallStatus = { running: false, success: true, loggedIn: true};
-        status.next(end_event);
-        status.complete();
-      },
-      e => {
-        this.loggedIn = false;
-        const end_event: LoginCallStatus = { running: false, success: false, loggedIn: false};
-        status.next(end_event);
-        status.complete();
-      }
-    );
+  public doLogout() {
+    this.localStorageService.clear('all');
+    this.access_token = '';
+    this.loggedIn = false;
+    return false;
+  }
+
+  public authHeader() {
+    return {Authorization: 'Bearer ' + this.access_token };
+  }
+
+  private dumpLocalStorage() {
+    this.localStorageService.keys.forEach((key) => {
+      console.log(key + ' =', this.localStorageService.get(key));
+    });
   }
 
 }
@@ -104,8 +105,12 @@ export class APILoginService extends TestAPILoginService {
 
 
 export interface LoginCallStatus {
-  running: boolean;
   success?: boolean;
   failure_reason?: string;
   loggedIn?: boolean;
+}
+
+export interface AuthToken {
+  refresh: string;
+  access: string;
 }
