@@ -13,10 +13,11 @@ import { LoginComponent } from './login/login.component';
 import { LoginService } from './login/login.service';
 import { HttpClientModule } from '@angular/common/http';
 import { HomeComponent } from './home/home.component';
-import { UserComponent } from './home/user.component';
-import { UserService } from './home/user.service';
+import { UserComponent } from './home/user/user.component';
+import { UserService } from './home/user/user.service';
 import { environment } from '../environments/environment';
 import { WebStorageModule } from 'ngx-store';
+import { ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -32,7 +33,8 @@ import { WebStorageModule } from 'ngx-store';
     DemoModule,
     AppRoutingModule,
     HttpClientModule,
-    WebStorageModule
+    WebStorageModule,
+    ReactiveFormsModule
   ],
   providers: [
     {provide: RouteReuseStrategy, useClass: RouteReuseStrategyService},

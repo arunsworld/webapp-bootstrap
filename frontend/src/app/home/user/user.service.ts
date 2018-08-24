@@ -1,7 +1,7 @@
 import { Observable, BehaviorSubject, Subject, of } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { LoginService, LoginCallStatus } from '../login/login.service';
+import { LoginService, LoginCallStatus } from '../../login/login.service';
 import { map, catchError } from 'rxjs/operators';
 
 
@@ -9,8 +9,9 @@ export abstract class UserService {
 
     public abstract getSelf(): Observable<UserStatus>;
     public abstract getUsers(): Observable<UserStatus>;
-    public abstract addUser(): Observable<UserStatus>;
-    public abstract deleteUser(): Observable<UserStatus>;
+    public abstract addUser(user: User): Observable<UserStatus>;
+    public abstract editUser(user: User): Observable<UserStatus>;
+    public abstract deleteUser(url: string): Observable<UserStatus>;
 
 }
 
@@ -44,7 +45,7 @@ export class TestAPIUserService extends UserService {
         const url = this.root_url + 'users/';
         return this.http.get(url).pipe(
             map( (users: User[]) => {
-                return {running: false, success: true, users: users};
+                return {success: true, users: users};
             } ),
             catchError( (err: HttpErrorResponse) => {
                 if (err.status === 401) {
@@ -55,12 +56,36 @@ export class TestAPIUserService extends UserService {
         );
     }
 
-    public addUser(): Observable<UserStatus> {
-        return of({success: false});
+    public addUser(user: User): Observable<UserStatus> {
+        const url = this.root_url + 'users/';
+        return this.http.post(url, user, {headers: this.loginService.authHeader()}).pipe(
+            map( () => ({success: true}) ),
+            catchError( (err: HttpErrorResponse) => {
+                console.log(err);
+                return of({ success: false });
+            })
+        );
     }
 
-    public deleteUser(): Observable<UserStatus> {
-        return of({success: false});
+    public editUser(user: User): Observable<UserStatus> {
+        const url = user.url;
+        return this.http.put(url, user, {headers: this.loginService.authHeader()}).pipe(
+            map( () => ({success: true}) ),
+            catchError( (err: HttpErrorResponse) => {
+                console.log(err);
+                return of({ success: false });
+            })
+        );
+    }
+
+    public deleteUser(url: string): Observable<UserStatus> {
+        return this.http.delete(url, {headers: this.loginService.authHeader()}).pipe(
+            map( () => ({success: true}) ),
+            catchError( (err: HttpErrorResponse) => {
+                console.log(err);
+                return of({ success: false });
+            })
+        );
     }
 
 }

@@ -18,6 +18,13 @@ class UserHelpers():
             'email': user.email,
         }
 
+    @staticmethod
+    def set_user_password(user, password):
+        if (password == ''):
+            return
+        user.set_password(password)
+        user.save()
+
 
 class UserSeralizer(serializers.Serializer):
     id = serializers.IntegerField()
@@ -25,6 +32,7 @@ class UserSeralizer(serializers.Serializer):
     first_name = serializers.CharField(required=False)
     last_name = serializers.CharField(required=False)
     email = serializers.EmailField()
+    password = serializers.CharField(required=False, allow_blank=True)
 
 
 # My implementation of IsAuthenticatedOrReadOnly for illustration
@@ -56,6 +64,7 @@ class UserList(views.APIView):
         try:
             new_user = User.objects.create(username=user['username'], first_name=user.get('first_name', ''),
                 last_name=user.get('last_name', ''), email=user.get('email'))
+            UserHelpers.set_user_password(new_user, user.get('password', ''))
         except Exception as e:
             return Response(dict(error=e.args[0]), status=status.HTTP_400_BAD_REQUEST)
         user['id'] = new_user.id
@@ -87,12 +96,12 @@ class UserDetail(views.APIView):
         user_data = serializer.data
         if (user_data['id'] != user.id):
             return Response(dict(error="User ID does not match."), status=status.HTTP_400_BAD_REQUEST)
-        if (user_data['username'] != user.username):
-            return Response(dict(error="Username does not match."), status=status.HTTP_400_BAD_REQUEST)
+        user.username = user_data.get('username', user.username)
         user.first_name = user_data.get('first_name', user.first_name)
         user.last_name = user_data.get('last_name', user.last_name)
         user.email = user_data.get('email', user.email)
         user.save()
+        UserHelpers.set_user_password(user, user_data.get('password', ''))
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def delete(self, request, pk):

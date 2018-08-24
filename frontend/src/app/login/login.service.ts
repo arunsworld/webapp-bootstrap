@@ -33,7 +33,7 @@ export class TestAPILoginService extends LoginService {
 
   constructor(private http: HttpClient, private localStorageService: LocalStorageService) {
     super();
-    this.dumpLocalStorage();
+    // this.dumpLocalStorage();
   }
 
   public doLogin(creds: LoginCredentials): Observable<LoginCallStatus> {

@@ -1,4 +1,4 @@
-import { TestAPIUserService } from '../app/home/user.service';
+import { TestAPIUserService } from '../app/home/user/user.service';
 import { TestAPILoginService } from '../app/login/login.service';
 
 // This file can be replaced during build by using the `fileReplacements` array.

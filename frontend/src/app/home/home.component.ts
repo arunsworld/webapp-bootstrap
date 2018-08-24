@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { LoginService } from '../login/login.service';
-import { UserService, UserStatus } from './user.service';
+import { UserService, UserStatus } from './user/user.service';
 
 @Component({
     template: `

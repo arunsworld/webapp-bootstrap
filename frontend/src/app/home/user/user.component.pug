@@ -1,0 +1,66 @@
+.row
+    .col-md-6
+        .card
+            .card-header Users
+            .card-body
+                ng-container([ngSwitch] = "userLoadingStatus.status")
+                    ab-loading(headerMessage='Loading...', *ngSwitchCase = " 'loading' ")
+                    div.text-center(*ngSwitchCase = " 'failed' ")
+                        p Loading failed.
+                        p
+                            button.btn.btn-success(type="button", (click)="loadUsers()") Retry
+                    div.text-center(*ngSwitchCase = " 'empty' ")
+                        p There are no users to display.
+                    table.table(*ngSwitchCase = " 'loaded' ")
+                        thead.thead-dark
+                            tr
+                                th Username
+                                th Name
+                                th Email
+                        tbody
+                            tr(*ngFor="let user of users; index as idx; trackBy: idx")
+                                td 
+                                    a(href="", (click)="edit_form(idx)") {{user.username}}
+                                td {{user.first_name}} {{user.last_name}}
+                                td {{user.email}}
+    .col-md-6
+        .card
+            .card-header {{formAction}} User
+            .card-body
+                form([formGroup]="userForm")
+                    .form-group.row
+                        label.col-sm-3.col-form-label Email
+                        .col-sm-9
+                            input.form-control(type="text", placeholder="Your email address", formControlName="email")
+                            .invalid-feedback A valid e-mail address is required.
+                    .form-group.row
+                        label.col-sm-3.col-form-label First Name
+                        .col-sm-9
+                            input.form-control(type="text", placeholder="First Name", formControlName="first_name")
+                            .invalid-feedback A First Name is required.
+                    .form-group.row
+                        label.col-sm-3.col-form-label Last Name
+                        .col-sm-9
+                            input.form-control(type="text", placeholder="Last Name", formControlName="last_name")
+                            .invalid-feedback A Last Name is required.
+                    .form-group.row
+                        label.col-sm-3.col-form-label Password
+                        .col-sm-9
+                            input.form-control(type="password", placeholder="Your password", formControlName="password")
+                            .invalid-feedback A valid password is required or leave it empty.
+                    .form-group.row.justify-content-end(*ngIf="!confirming_deletion; else showConfirmDeletion")
+                        .col-sm-9.btn-group(*ngIf="!saving; else showSpinner")
+                            button.btn.btn-primary(type="button", [disabled]="userForm.status!='VALID'",
+                                            (click)="save()") {{formAction}}
+                            button.btn.btn-warning(type="button", *ngIf="!userForm.untouched", 
+                                            (click)="reset_form()") Reset
+                            button.btn.btn-danger(type="button", *ngIf="userForm.value.id !== null", 
+                                            (click)="initiate_user_delete()") Delete
+                        ng-template(#showSpinner="")
+                            .col-sm-9
+                                i.fa.fa-spinner.fa-spin.spinner
+                    ng-template(#showConfirmDeletion="")
+                        .form-group.row.justify-content-end
+                            .col-sm-9.btn-group
+                                button.btn.btn-danger(type="button",
+                                                (click)="delete_user()") Confirm Deletion

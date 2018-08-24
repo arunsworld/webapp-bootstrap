@@ -136,7 +136,6 @@ STATIC_ROOT = "/app/backend/public/static/"
 STATIC_URL = '/api/static/'
 
 CORS_ORIGIN_ALLOW_ALL = True
-CORS_ALLOW_CREDENTIALS = True
 
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(days=1),
