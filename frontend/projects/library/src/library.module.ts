@@ -6,6 +6,8 @@ import { DatepickerComponent } from './lib/datepicker.component';
 import { BootstrapLoginComponent } from './lib/bootstrap-login/bootstrap-login.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { ChartComponent } from './lib/chart/ab-chart/chart.component';
+import { BubbleComponent } from './lib/chart/ab-bubble/bubble.component';
 
 @NgModule({
   imports: [
@@ -13,8 +15,8 @@ import { CommonModule } from '@angular/common';
     ReactiveFormsModule
   ],
   declarations: [LoadingComponent, BootstrapNavbarComponent, Select2Component, DatepickerComponent,
-    BootstrapLoginComponent],
+    BootstrapLoginComponent, ChartComponent, BubbleComponent],
   exports: [LoadingComponent, BootstrapNavbarComponent, Select2Component, DatepickerComponent,
-    BootstrapLoginComponent]
+    BootstrapLoginComponent, ChartComponent, BubbleComponent]
 })
 export class LibraryModule { }

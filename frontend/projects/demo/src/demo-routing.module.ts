@@ -4,12 +4,16 @@ import { DemoFormsComponent } from './lib/demo-forms/demo-forms.component';
 import { DemoLoadingComponent } from './lib/demo-loading.component';
 import { DemoHomeComponent } from './lib/demo-home.component';
 import { DemoLoginComponent } from './lib/demo-login.component';
+import { DemoChartComponent } from './lib/demo-chart.component';
+import { DemoBubbleChartComponent } from './lib/demo-bubble.component';
 
 const routes: Routes = [
   {path: 'demo', component: DemoHomeComponent, children: [
     {path: 'forms', component: DemoFormsComponent},
     {path: 'loading', component: DemoLoadingComponent},
     {path: 'login', component: DemoLoginComponent},
+    {path: 'chart', component: DemoChartComponent},
+    {path: 'bubble', component: DemoBubbleChartComponent},
     {path: '**', redirectTo: 'forms'}
   ]}
 ];

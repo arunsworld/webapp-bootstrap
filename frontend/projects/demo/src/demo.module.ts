@@ -9,6 +9,8 @@ import { DemoRoutingModule } from './demo-routing.module';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { DemoLoginComponent } from './lib/demo-login.component';
+import { DemoChartComponent } from './lib/demo-chart.component';
+import { DemoBubbleChartComponent } from './lib/demo-bubble.component';
 
 @NgModule({
   imports: [
@@ -19,7 +21,7 @@ import { DemoLoginComponent } from './lib/demo-login.component';
   ],
   declarations: [
     DemoHomeComponent, DemoNavComponent, DemoProfileComponent, DemoFormsComponent, DemoLoadingComponent,
-    DemoLoginComponent
+    DemoLoginComponent, DemoChartComponent, DemoBubbleChartComponent
   ],
   exports: []
 })

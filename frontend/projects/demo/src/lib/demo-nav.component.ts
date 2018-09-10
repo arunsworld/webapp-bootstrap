@@ -13,6 +13,12 @@ import { Component, ViewChild, ElementRef, OnInit } from '@angular/core';
       <li class="nav-item" routerLinkActive="active">
         <a class="nav-link" routerLink="/demo/login">Login</a>
       </li>
+      <li class="nav-item" routerLinkActive="active">
+        <a class="nav-link" routerLink="/demo/chart">Charts</a>
+      </li>
+      <li class="nav-item" routerLinkActive="active">
+        <a class="nav-link" routerLink="/demo/bubble">Bubble</a>
+      </li>
     </ul>
   `,
   styles: []
