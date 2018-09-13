@@ -5,7 +5,7 @@ import { Component } from '@angular/core';
   template: `
     <ul class="navbar-nav">
         <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" data-toggle="dropdown">Arun Barua</a>
+            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="">Arun Barua</a>
             <div class="dropdown-menu dropdown-menu-right">
                 <a class="dropdown-item" routerLink="/login" routerLinkActive="active">Login</a>
                 <a class="dropdown-item" routerLink="/demo/forms" routerLinkActive="active">Forms</a>

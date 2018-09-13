@@ -5,25 +5,26 @@ A bootstrap package to get started with building WebApps.
 
 ## Dependencies
 
-* arunsworld/angular:latest Docker image
+* arunsworld/angular:latest Docker image (optional)
 * arunsworld/django-apache:Anaconda3-5.2.0 Docker image (`docker pull arunsworld/django-apache:Anaconda3-5.2.0`)
 
 ## How to use
 
 * Download from git (git clone https://github.com/arunsworld/webapp-bootstrap.git)
-* Install npm packages
-``
+* Install npm packages (optional)
+```
 docker run --rm -it -v $PWD:/app arunsworld/angular:latest
 
 cd /app/frontend
 npm install
-``
-* Perform Angular build to create the frontend binary
-``
+```
+
+* Perform Angular build to create the frontend binary (optional)
+```
 ng build --prod
-``
+```
 * Create backend DB
-``
+```
 docker run --rm -i -d -v $PWD:/app --name backend arunsworld/django-apache:Anaconda3-5.2.0
 docker exec -it backend bash
 
@@ -31,12 +32,12 @@ cd /app/backend
 python manage.py migrate; python manage.py createsuperuser; python manage.py collectstatic;
 
 stop
-``
+```
 * Start apache and start serving content
-``
+```
 cd scripts
 ./start_container.sh
-``
+```
 * Navigate to: http://localhost:8090/demo/
 
 ## How to customize

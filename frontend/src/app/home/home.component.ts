@@ -13,7 +13,7 @@ import { UserService, UserStatus } from './user/user.service';
             </ul>
             <ul class="navbar-nav">
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" data-toggle="dropdown">{{myName}}</a>
+                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="">{{myName}}</a>
                     <div class="dropdown-menu dropdown-menu-right">
                         <a class="dropdown-item" href="" (click)="logout()">Logout</a>
                     </div>
