@@ -10,10 +10,13 @@ A bootstrap package to get started with building WebApps.
 
 ## How to use
 
-* Download from git
-* Install npm packages (use arunsworld/angular docker image if required)
+* Download from git (git clone https://github.com/arunsworld/webapp-bootstrap.git)
+* Install npm packages
 ``
-cd frontend; npm install
+docker run --rm -it -v $PWD:/app arunsworld/angular:latest
+
+cd /app/frontend
+npm install
 ``
 * Perform Angular build to create the frontend binary
 ``
@@ -21,7 +24,13 @@ ng build --prod
 ``
 * Create backend DB
 ``
-cd backend; python manage.py migrate; python manage.py createsuperuser; python manage.py collectstatic;
+docker run --rm -i -d -v $PWD:/app --name backend arunsworld/django-apache:Anaconda3-5.2.0
+docker exec -it backend bash
+
+cd /app/backend
+python manage.py migrate; python manage.py createsuperuser; python manage.py collectstatic;
+
+stop
 ``
 * Start apache and start serving content
 ``
