@@ -10,6 +10,9 @@ import { UserService, UserStatus } from './user/user.service';
                 <li class="nav-item" routerLinkActive="active">
                     <a class="nav-link" routerLink="/home/users">Users</a>
                 </li>
+                <li class="nav-item" routerLinkActive="active">
+                    <a class="nav-link" routerLink="/demo">Components Demo</a>
+                </li>
             </ul>
             <ul class="navbar-nav">
                 <li class="nav-item dropdown">

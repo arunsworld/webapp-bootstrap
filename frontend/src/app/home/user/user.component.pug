@@ -11,18 +11,19 @@
                             button.btn.btn-success(type="button", (click)="loadUsers()") Retry
                     div.text-center(*ngSwitchCase = " 'empty' ")
                         p There are no users to display.
-                    table.table(*ngSwitchCase = " 'loaded' ")
-                        thead.thead-dark
-                            tr
-                                th Username
-                                th Name
-                                th Email
-                        tbody
-                            tr(*ngFor="let user of users; index as idx; trackBy: idx")
-                                td 
-                                    a(href="", (click)="edit_form(idx)") {{user.username}}
-                                td {{user.first_name}} {{user.last_name}}
-                                td {{user.email}}
+                    div(style="overflow: auto;")
+                        table.table(*ngSwitchCase = " 'loaded' ")
+                            thead.thead-dark
+                                tr
+                                    th Username
+                                    th Name
+                                    th Email
+                            tbody
+                                tr(*ngFor="let user of users; index as idx; trackBy: idx")
+                                    td 
+                                        a(href="", (click)="edit_form(idx)") {{user.username}}
+                                    td {{user.first_name}} {{user.last_name}}
+                                    td {{user.email}}
     .col-md-6
         .card
             .card-header {{formAction}} User

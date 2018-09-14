@@ -5,13 +5,27 @@ import { LoginService, LoginCallStatus } from './login.service';
 
 @Component({
   template: `
-    <div class="bodycontent">
-      <div *ngIf="loggedInCheck; else showLogin">
-        <ab-loading headerMessage="Checking if logged in..."></ab-loading>
+    <div class="container-fluid bodycontent">
+      <div *ngIf="serverUnreachable; else serverIsAvailable">
+        <ab-bootstrap-card header="Server unreachable">
+          <p>The server is currently unreachable.</p>
+          <p>
+            <button class="btn btn-primary" type="button" (click)="checkIfLoggedIn()">Retry</button>
+          </p>
+        </ab-bootstrap-card>
       </div>
-      <ng-template #showLogin>
-        <ab-bootstrap-login [loggingIn]="loggingIn" (login)="do_login($event)"></ab-bootstrap-login>
+      <ng-template #serverIsAvailable>
+        <div *ngIf="loggedInCheck; else showLogin">
+          <ab-loading headerMessage="Checking if logged in..."></ab-loading>
+        </div>
+        <ng-template #showLogin>
+          <ab-bootstrap-login [focusOnLoginID]="false" [loggingIn]="loggingIn" (login)="do_login($event)"></ab-bootstrap-login>
+        </ng-template>
       </ng-template>
+      <br/>
+      <ab-bootstrap-card header="Component Library">
+        <p>Click <a routerLink="/demo">here</a> to see a demonstration of the Component Library.</p>
+      </ab-bootstrap-card>
     </div>
   `,
   styles: ['.bodycontent { padding-top: 80px; }']
@@ -21,12 +35,12 @@ export class LoginComponent {
     creds: LoginCredentials;
     loggedInCheck: boolean;
     loggingIn = false;
+    serverUnreachable = false;
 
     constructor(private router: Router, private loginService: LoginService) {
       if (loginService.loggedIn) {
         this.router.navigateByUrl(this.loginService.getNextUrl());
       }
-      this.loggedInCheck = true;
       this.checkIfLoggedIn();
     }
 
@@ -40,6 +54,7 @@ export class LoginComponent {
     }
 
     private checkIfLoggedIn() {
+      this.loggedInCheck = true;
       this.loginService.checkIfLoggedIn().subscribe((status: LoginCallStatus) => {
         this.checkLoginDone(status);
       });
@@ -51,6 +66,7 @@ export class LoginComponent {
         return;
       }
       this.checkLoginSuccessful(status);
+      this.serverUnreachable = false;
     }
 
     private doLoginDone(status: LoginCallStatus) {
@@ -59,6 +75,7 @@ export class LoginComponent {
         return;
       }
       this.doLoginSuccessful(status);
+      this.serverUnreachable = false;
     }
 
     private doLoginSuccessful(status: LoginCallStatus) {
@@ -77,7 +94,7 @@ export class LoginComponent {
     }
 
     private failedToReachServer() {
-      alert('Failed to reach server. Please refresh the page...');
+      this.serverUnreachable = true;
     }
 
 }

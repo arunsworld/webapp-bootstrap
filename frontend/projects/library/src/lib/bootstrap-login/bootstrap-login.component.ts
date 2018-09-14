@@ -11,6 +11,7 @@ declare var $: any;
 export class BootstrapLoginComponent implements AfterContentInit {
 
   @Input() loggingIn = false;
+  @Input() focusOnLoginID = true;
   @Output() login = new EventEmitter<LoginCredentials>();
   @ViewChild('login') login_text: ElementRef;
 
@@ -24,6 +25,7 @@ export class BootstrapLoginComponent implements AfterContentInit {
   }
 
   ngAfterContentInit(): void {
+    if (!this.focusOnLoginID) { return; }
     this.renderer.invokeElementMethod(this.login_text.nativeElement, 'focus');
   }
 
