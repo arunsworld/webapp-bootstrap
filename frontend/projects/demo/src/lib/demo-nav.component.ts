@@ -19,6 +19,9 @@ import { Component, ViewChild, ElementRef, OnInit } from '@angular/core';
       <li class="nav-item" routerLinkActive="active">
         <a class="nav-link" routerLink="/demo/bubble">Bubble</a>
       </li>
+      <li class="nav-item" routerLinkActive="active">
+        <a class="nav-link" routerLink="/demo/datatable">DataTable</a>
+      </li>
     </ul>
   `,
   styles: []

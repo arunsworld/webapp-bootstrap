@@ -9,6 +9,7 @@ import { CommonModule } from '@angular/common';
 import { ChartComponent } from './lib/chart/ab-chart/chart.component';
 import { BubbleComponent } from './lib/chart/ab-bubble/bubble.component';
 import { BootstrapCardComponent } from './lib/bootstrap-card.component';
+import { DataTablesComponent } from './lib/datatables.component';
 
 @NgModule({
   imports: [
@@ -16,8 +17,10 @@ import { BootstrapCardComponent } from './lib/bootstrap-card.component';
     ReactiveFormsModule
   ],
   declarations: [LoadingComponent, BootstrapNavbarComponent, Select2Component, DatepickerComponent,
-    BootstrapLoginComponent, ChartComponent, BubbleComponent, BootstrapCardComponent],
+    BootstrapLoginComponent, ChartComponent, BubbleComponent, BootstrapCardComponent,
+    DataTablesComponent],
   exports: [LoadingComponent, BootstrapNavbarComponent, Select2Component, DatepickerComponent,
-    BootstrapLoginComponent, ChartComponent, BubbleComponent, BootstrapCardComponent]
+    BootstrapLoginComponent, ChartComponent, BubbleComponent, BootstrapCardComponent,
+    DataTablesComponent]
 })
 export class LibraryModule { }

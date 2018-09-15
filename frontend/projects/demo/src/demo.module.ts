@@ -11,6 +11,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { DemoLoginComponent } from './lib/demo-login.component';
 import { DemoChartComponent } from './lib/demo-chart.component';
 import { DemoBubbleChartComponent } from './lib/demo-bubble.component';
+import { DemoDataTableComponent } from './lib/demo-datatable.component';
 
 @NgModule({
   imports: [
@@ -21,7 +22,7 @@ import { DemoBubbleChartComponent } from './lib/demo-bubble.component';
   ],
   declarations: [
     DemoHomeComponent, DemoNavComponent, DemoProfileComponent, DemoFormsComponent, DemoLoadingComponent,
-    DemoLoginComponent, DemoChartComponent, DemoBubbleChartComponent
+    DemoLoginComponent, DemoChartComponent, DemoBubbleChartComponent, DemoDataTableComponent
   ],
   exports: []
 })
