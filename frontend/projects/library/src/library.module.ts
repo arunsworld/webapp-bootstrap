@@ -10,6 +10,7 @@ import { ChartComponent } from './lib/chart/ab-chart/chart.component';
 import { BubbleComponent } from './lib/chart/ab-bubble/bubble.component';
 import { BootstrapCardComponent } from './lib/bootstrap-card.component';
 import { DataTablesComponent } from './lib/datatables.component';
+import { DropzoneComponent } from './lib/dropzone.component';
 
 @NgModule({
   imports: [
@@ -18,9 +19,9 @@ import { DataTablesComponent } from './lib/datatables.component';
   ],
   declarations: [LoadingComponent, BootstrapNavbarComponent, Select2Component, DatepickerComponent,
     BootstrapLoginComponent, ChartComponent, BubbleComponent, BootstrapCardComponent,
-    DataTablesComponent],
+    DataTablesComponent, DropzoneComponent],
   exports: [LoadingComponent, BootstrapNavbarComponent, Select2Component, DatepickerComponent,
     BootstrapLoginComponent, ChartComponent, BubbleComponent, BootstrapCardComponent,
-    DataTablesComponent]
+    DataTablesComponent, DropzoneComponent]
 })
 export class LibraryModule { }

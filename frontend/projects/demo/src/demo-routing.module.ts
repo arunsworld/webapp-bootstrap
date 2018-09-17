@@ -7,6 +7,7 @@ import { DemoLoginComponent } from './lib/demo-login.component';
 import { DemoChartComponent } from './lib/demo-chart.component';
 import { DemoBubbleChartComponent } from './lib/demo-bubble.component';
 import { DemoDataTableComponent } from './lib/demo-datatable.component';
+import { DemoDropzoneComponent } from './lib/demo-dropzone.component';
 
 const routes: Routes = [
   {path: 'demo', component: DemoHomeComponent, children: [
@@ -16,6 +17,7 @@ const routes: Routes = [
     {path: 'chart', component: DemoChartComponent},
     {path: 'bubble', component: DemoBubbleChartComponent},
     {path: 'datatable', component: DemoDataTableComponent},
+    {path: 'dropzone', component: DemoDropzoneComponent},
     {path: '**', redirectTo: 'forms'}
   ]}
 ];

@@ -19,6 +19,7 @@ from django.conf.urls import include
 from rest_framework.schemas import get_schema_view
 from rest_framework_simplejwt.views import token_obtain_pair, token_refresh, token_verify
 from .views import user_list_view, user_detail_view, user_self_view
+from .fileservice import file_detail_view, file_list_view
 from rest_framework_swagger.views import get_swagger_view
 
 schema_view = get_swagger_view(title='Bootstrap API')
@@ -36,6 +37,9 @@ urlpatterns = [
     path('users/', user_list_view, name='user-list'),
     path('user/', user_self_view, name='user-self'),
     path('user/<int:pk>/', user_detail_view, name='user-detail'),
+
+    path('files/', file_list_view, name='file-list'),
+    path('file/<str:filename>/', file_detail_view, name='file-detail'),
 
     path('admin/', admin.site.urls),
 ]

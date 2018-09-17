@@ -7,22 +7,25 @@ import { DemoLoadingComponent } from './lib/demo-loading.component';
 import { LibraryModule } from '../../library/src/public_api';
 import { DemoRoutingModule } from './demo-routing.module';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { DemoLoginComponent } from './lib/demo-login.component';
 import { DemoChartComponent } from './lib/demo-chart.component';
 import { DemoBubbleChartComponent } from './lib/demo-bubble.component';
 import { DemoDataTableComponent } from './lib/demo-datatable.component';
+import { DemoDropzoneComponent } from './lib/demo-dropzone.component';
 
 @NgModule({
   imports: [
     CommonModule,
+    FormsModule,
     ReactiveFormsModule,
     LibraryModule,
     DemoRoutingModule
   ],
   declarations: [
     DemoHomeComponent, DemoNavComponent, DemoProfileComponent, DemoFormsComponent, DemoLoadingComponent,
-    DemoLoginComponent, DemoChartComponent, DemoBubbleChartComponent, DemoDataTableComponent
+    DemoLoginComponent, DemoChartComponent, DemoBubbleChartComponent, DemoDataTableComponent,
+    DemoDropzoneComponent
   ],
   exports: []
 })
