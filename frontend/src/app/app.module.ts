@@ -1,8 +1,8 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
-import { LibraryModule, RouteReuseStrategyService } from 'projects/library/src/public_api';
-import { DemoModule } from 'projects/demo/src/public_api';
+import { LibraryModule, RouteReuseStrategyService } from 'projects/library/public_api';
+import { DemoModule } from 'projects/demo/public_api';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './ab-root/app.component';
 

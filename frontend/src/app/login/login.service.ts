@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { LoginCredentials } from 'projects/library/src/public_api';
+import { LoginCredentials } from 'projects/library/public_api';
 import { Observable, BehaviorSubject, Subject, of } from 'rxjs';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { map, catchError } from 'rxjs/operators';

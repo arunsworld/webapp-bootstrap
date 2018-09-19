@@ -1,0 +1,6 @@
+[submodule "frontend/projects/library"]
+	path = frontend/projects/library
+	url = https://github.com/arunsworld/angular-library.git
+[submodule "frontend/projects/demo"]
+	path = frontend/projects/demo
+	url = https://github.com/arunsworld/angular-library-demo.git

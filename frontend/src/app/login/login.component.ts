@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { LoginCredentials } from 'projects/library/src/public_api';
+import { LoginCredentials } from 'projects/library/public_api';
 import { Router } from '@angular/router';
 import { LoginService, LoginCallStatus } from './login.service';
 
