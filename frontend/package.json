@@ -20,6 +20,7 @@
     "@types/moment-duration-format": "^2.2.1",
     "bootstrap": "^4.1.2",
     "bootstrap-datepicker": "^1.8.0",
+    "bootstrap4-datetimepicker": "^5.2.3",
     "core-js": "^2.5.4",
     "d3": "^5.5.0",
     "d3-tip": "^0.9.1",
