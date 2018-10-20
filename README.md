@@ -6,7 +6,7 @@ A bootstrap package to get started with building WebApps.
 ## Dependencies
 
 * arunsworld/angular:latest Docker image (optional)
-* arunsworld/django-apache:Anaconda3-5.2.0 Docker image (`docker pull arunsworld/django-apache:Anaconda3-5.2.0`)
+* arunsworld/django-apache:Anaconda3-5.3.0 Docker image (`docker pull arunsworld/django-apache:Anaconda3-5.3.0`)
 
 ## How to use
 
@@ -25,7 +25,7 @@ ng build --prod
 ```
 * Create backend DB
 ```
-docker run --rm -i -d -v $PWD:/app --name backend arunsworld/django-apache:Anaconda3-5.2.0
+docker run --rm -i -d -v $PWD:/app --name backend arunsworld/django-apache:Anaconda3-5.3.0
 docker exec -it backend bash
 
 cd /app/backend

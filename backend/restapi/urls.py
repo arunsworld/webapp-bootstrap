@@ -21,11 +21,13 @@ from rest_framework_simplejwt.views import token_obtain_pair, token_refresh, tok
 from .views import user_list_view, user_detail_view, user_self_view
 from .fileservice import file_detail_view, file_list_view
 from rest_framework_swagger.views import get_swagger_view
+from rest_framework.renderers import JSONOpenAPIRenderer
+from rest_framework import permissions
 
 schema_view = get_swagger_view(title='Bootstrap API')
 
 urlpatterns = [
-    path('', get_schema_view()),
+    path('', get_schema_view(title='Bootstrap API', permission_classes=(permissions.AllowAny,))),
     path('swagger/', schema_view),
     
     path('auth/', include('rest_framework.urls', namespace='rest_framework')),
